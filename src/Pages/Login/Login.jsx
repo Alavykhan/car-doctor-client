@@ -1,10 +1,16 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvides";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 const Login = () => {
 
     const {signIn} = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = event =>{
         event.preventDefault();
@@ -16,6 +22,8 @@ const Login = () => {
         .then(result=>{
             const user =result.user;
             console.log(user);
+            navigate(from, {replace: true})
+
         })
         .catch(error=>console.log(error))
     }
@@ -44,6 +52,7 @@ const Login = () => {
                 </div>
             </form>
             <p className="p-">Didnt have any account <Link to='/signup'>Sign Up</Link></p>
+            <SocialLogin/>
             </div>
         </div>
         </div>
